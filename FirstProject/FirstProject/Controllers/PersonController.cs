@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FirstProject.Models;
+using FirstProject.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FirstProject.Controllers
 {
@@ -11,23 +9,24 @@ namespace FirstProject.Controllers
     [Route("[controller]")]
     public class PersonController : Controller
     {
-        private readonly PersonContext _context;
+        private readonly IPersonRepository _personRepository;
 
-        public PersonController(PersonContext context)
+        public PersonController(IPersonRepository personRepository)
         {
-            _context = context;
+            _personRepository = personRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Person>>> GetPersons()
+        public ActionResult<IEnumerable<Person>> GetPersons()
         {
-            return await _context.Persons.ToListAsync();
+            var allPersons = _personRepository.GetPersons();
+            return new ActionResult<IEnumerable<Person>>(allPersons);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(int id)
+        public ActionResult<Person> GetPerson(int id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = _personRepository.GetPerson(id);
             if (person == null)
             {
                 return NotFound();
@@ -37,29 +36,29 @@ namespace FirstProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Person>> AddPerson(Person person)
+        public ActionResult<Person> AddPerson(Person person)
         {
-            if (person == null)
+            if (! ModelState.IsValid)
             {
                 return BadRequest();
             }
 
-            _context.Persons.Add(person);
-            await _context.SaveChangesAsync();
+            _personRepository.AddPerson(person);
+            _personRepository.Save();
             return Ok(person);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Person>> DeletePerson(int id)
+        public ActionResult<Person> DeletePerson(int id)
         {
-            var person = await _context.Persons.FindAsync(id);
+            var person = _personRepository.GetPerson(id);
             if (person == null)
             {
                 return NotFound();
             }
 
-            _context.Persons.Remove(person);
-            await _context.SaveChangesAsync();
+            _personRepository.DeletePerson(id);
+            _personRepository.Save();
             return Ok(person);
         }
     }

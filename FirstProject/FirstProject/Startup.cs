@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FirstProject.Models;
+using FirstProject.Repository;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +25,11 @@ namespace FirstProject
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PersonContext>(options => options.UseSqlServer(connection));
-            services.AddControllersWithViews();
+
+            services.AddScoped<IPersonRepository, PersonRepository>();
+
+            services.AddControllers().AddFluentValidation();
+            services.AddTransient<IValidator<Person>, PersonValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,13 +50,8 @@ namespace FirstProject
             app.UseStaticFiles();
 
             app.UseRouting();
-            
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
