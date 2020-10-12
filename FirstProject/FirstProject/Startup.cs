@@ -23,7 +23,7 @@ namespace FirstProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<PersonContext>(options => options.UseSqlServer(connection));
 
             services.AddScoped<IPersonRepository, PersonRepository>();
@@ -31,7 +31,9 @@ namespace FirstProject
             services.AddControllers().AddFluentValidation();
             services.AddTransient<IValidator<Person>, PersonValidator>();
 
-            services.AddStackExchangeRedisCache(options => options.Configuration = "localhost:6379");
+            var redisHost = Configuration["Redis:Host"];
+            var redisPort = Configuration["Redis:Port"];
+            services.AddStackExchangeRedisCache(options => options.Configuration = $"{redisHost}:{redisPort}");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
