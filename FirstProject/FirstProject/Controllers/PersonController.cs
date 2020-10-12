@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using FirstProject.Models;
 using FirstProject.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace FirstProject.Controllers
 {
@@ -10,10 +14,12 @@ namespace FirstProject.Controllers
     public class PersonController : Controller
     {
         private readonly IPersonRepository _personRepository;
+        private readonly IDistributedCache _distributedCache;
 
-        public PersonController(IPersonRepository personRepository)
+        public PersonController(IPersonRepository personRepository, IDistributedCache distributedCache)
         {
             _personRepository = personRepository;
+            _distributedCache = distributedCache;
         }
 
         [HttpGet]
@@ -21,6 +27,29 @@ namespace FirstProject.Controllers
         {
             var allPersons = _personRepository.GetAll();
             return new ActionResult<IEnumerable<Person>>(allPersons);
+        }
+
+        [HttpGet("redis")]
+        public ActionResult<IEnumerable<Person>> GetAllUsingRedisCache()
+        {
+            const string cacheKey = "personList";
+            string serializedPersonList;
+            List<Person> personList;
+            var redisPersonList = _distributedCache.Get(cacheKey);
+            if (redisPersonList != null)
+            {
+                serializedPersonList = Encoding.UTF8.GetString(redisPersonList);
+                personList = JsonConvert.DeserializeObject<List<Person>>(serializedPersonList);
+            }
+            else
+            {
+                personList = _personRepository.GetAll().ToList();
+                serializedPersonList = JsonConvert.SerializeObject(personList);
+                redisPersonList = Encoding.UTF8.GetBytes(serializedPersonList);
+                _distributedCache.Set(cacheKey, redisPersonList);
+            }
+
+            return Ok(personList);
         }
 
         [HttpGet("{id}")]
@@ -32,7 +61,36 @@ namespace FirstProject.Controllers
                 return NotFound();
             }
 
-            return person;
+            return Ok(person);
+        }
+
+        [HttpGet("redis/{id}")]
+        public ActionResult<Person> GetUsingRedisCache(int id)
+        {
+            const string cacheKey = "personList";
+            string serializedPersonList;
+            List<Person> personList;
+            var redisPersonList = _distributedCache.Get(cacheKey);
+            if (redisPersonList != null)
+            {
+                serializedPersonList = Encoding.UTF8.GetString(redisPersonList);
+                personList = JsonConvert.DeserializeObject<List<Person>>(serializedPersonList);
+            }
+            else
+            {
+                personList = _personRepository.GetAll().ToList();
+                serializedPersonList = JsonConvert.SerializeObject(personList);
+                redisPersonList = Encoding.UTF8.GetBytes(serializedPersonList);
+                _distributedCache.Set(cacheKey, redisPersonList);
+            }
+
+            var person = personList.Find(p => p.Id == id);
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(person);
         }
 
         [HttpPost]
