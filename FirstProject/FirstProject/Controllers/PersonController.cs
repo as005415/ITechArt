@@ -33,20 +33,17 @@ namespace FirstProject.Controllers
         public ActionResult<IEnumerable<Person>> GetAllUsingRedisCache()
         {
             const string cacheKey = "personList";
-            string serializedPersonList;
             List<Person> personList;
-            var redisPersonList = _distributedCache.Get(cacheKey);
+            var redisPersonList = _distributedCache.GetString(cacheKey);
             if (redisPersonList != null)
             {
-                serializedPersonList = Encoding.UTF8.GetString(redisPersonList);
-                personList = JsonConvert.DeserializeObject<List<Person>>(serializedPersonList);
+                personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
             }
             else
             {
                 personList = _personRepository.GetAll().ToList();
-                serializedPersonList = JsonConvert.SerializeObject(personList);
-                redisPersonList = Encoding.UTF8.GetBytes(serializedPersonList);
-                _distributedCache.Set(cacheKey, redisPersonList);
+                redisPersonList = JsonConvert.SerializeObject(personList);
+                _distributedCache.SetString(cacheKey, redisPersonList);
             }
 
             return Ok(personList);
@@ -68,20 +65,17 @@ namespace FirstProject.Controllers
         public ActionResult<Person> GetUsingRedisCache(int id)
         {
             const string cacheKey = "personList";
-            string serializedPersonList;
             List<Person> personList;
-            var redisPersonList = _distributedCache.Get(cacheKey);
+            var redisPersonList = _distributedCache.GetString(cacheKey);
             if (redisPersonList != null)
             {
-                serializedPersonList = Encoding.UTF8.GetString(redisPersonList);
-                personList = JsonConvert.DeserializeObject<List<Person>>(serializedPersonList);
+                personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
             }
             else
             {
                 personList = _personRepository.GetAll().ToList();
-                serializedPersonList = JsonConvert.SerializeObject(personList);
-                redisPersonList = Encoding.UTF8.GetBytes(serializedPersonList);
-                _distributedCache.Set(cacheKey, redisPersonList);
+                redisPersonList = JsonConvert.SerializeObject(personList);
+                _distributedCache.SetString(cacheKey, redisPersonList);
             }
 
             var person = personList.Find(p => p.Id == id);
