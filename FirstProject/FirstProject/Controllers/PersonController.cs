@@ -38,7 +38,7 @@ namespace FirstProject.Controllers
         [HttpPost]
         public ActionResult<Person> AddPerson(Person person)
         {
-            if (! ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest();
             }
