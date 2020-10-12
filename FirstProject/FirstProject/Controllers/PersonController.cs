@@ -17,16 +17,16 @@ namespace FirstProject.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Person>> GetPersons()
+        public ActionResult<IEnumerable<Person>> GetAll()
         {
-            var allPersons = _personRepository.GetPersons();
+            var allPersons = _personRepository.GetAll();
             return new ActionResult<IEnumerable<Person>>(allPersons);
         }
 
         [HttpGet("{id}")]
         public ActionResult<Person> GetPerson(int id)
         {
-            var person = _personRepository.GetPerson(id);
+            var person = _personRepository.Get(id);
             if (person == null)
             {
                 return NotFound();
@@ -51,7 +51,7 @@ namespace FirstProject.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Person> DeletePerson(int id)
         {
-            var person = _personRepository.GetPerson(id);
+            var person = _personRepository.Get(id);
             if (person == null)
             {
                 return NotFound();

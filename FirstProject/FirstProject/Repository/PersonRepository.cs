@@ -13,12 +13,12 @@ namespace FirstProject.Repository
             _context = context;
         }
 
-        public IEnumerable<Person> GetPersons()
+        public IEnumerable<Person> GetAll()
         {
             return _context.Persons.ToList();
         }
 
-        public Person GetPerson(int id)
+        public Person Get(int id)
         {
             return _context.Persons.Find(id);
         }
