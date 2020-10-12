@@ -38,11 +38,6 @@ namespace FirstProject.Controllers
         [HttpPost]
         public ActionResult<Person> AddPerson(Person person)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             _personRepository.AddPerson(person);
             _personRepository.Save();
             return Ok(person);
