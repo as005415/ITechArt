@@ -26,27 +26,22 @@ namespace FirstProject.Controllers
         public ActionResult<IEnumerable<Person>> GetAll()
         {
             var allPersons = _personRepository.GetAll();
-            return new ActionResult<IEnumerable<Person>>(allPersons);
+            if (allPersons == null) return NotFound();
+            return Ok(allPersons);
         }
 
         [HttpGet("redis")]
         public ActionResult<IEnumerable<Person>> GetAllUsingRedisCache()
         {
-            const string cacheKey = "personList";
-            List<Person> personList;
-            var redisPersonList = _redisPersonRepository.GetString(cacheKey);
-            if (redisPersonList != null)
-            {
-                personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
-            }
-            else
-            {
-                personList = _personRepository.GetAll().ToList();
-                redisPersonList = JsonConvert.SerializeObject(personList);
-                _redisPersonRepository.SetString(cacheKey, redisPersonList);
-            }
-
-            return Ok(personList);
+            var allPersons = _redisPersonRepository.GetAll();
+            if (allPersons != null) return Ok(allPersons);
+            
+            allPersons = _personRepository.GetAll();
+            
+            if (allPersons == null) return NotFound();
+            _redisPersonRepository.SaveAll(allPersons);
+            
+            return Ok(allPersons);
         }
 
         [HttpGet("{id}")]
@@ -64,25 +59,13 @@ namespace FirstProject.Controllers
         [HttpGet("redis/{id}")]
         public ActionResult<Person> GetUsingRedisCache(int id)
         {
-            const string cacheKey = "personList";
-            List<Person> personList;
-            var redisPersonList = _redisPersonRepository.GetString(cacheKey);
-            if (redisPersonList != null)
-            {
-                personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
-            }
-            else
-            {
-                personList = _personRepository.GetAll().ToList();
-                redisPersonList = JsonConvert.SerializeObject(personList);
-                _redisPersonRepository.SetString(cacheKey, redisPersonList);
-            }
+            var person = _redisPersonRepository.Get(id);
+            if (person != null) return Ok(person);
 
-            var person = personList.Find(p => p.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
+            person = _personRepository.Get(id);
+
+            if (person == null) return NotFound();
+            _redisPersonRepository.SavePerson(person);
 
             return Ok(person);
         }

@@ -1,27 +1,53 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FirstProject.Models;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using StackExchange.Redis;
+using Newtonsoft.Json;
 
 namespace FirstProject.Repository
 {
     public class RedisPersonRepository : IRedisPersonRepository
     {
         private readonly IDistributedCache _distributedCache;
+        private const string CacheKey = "personList";
 
         public RedisPersonRepository(IDistributedCache distributedCache)
         {
             _distributedCache = distributedCache;
         }
 
-        public string GetString(string key)
+        public IEnumerable<Person> GetAll()
         {
-            return _distributedCache.GetString(key);
+            var redisPersonList = _distributedCache.GetString(CacheKey);
+            if (redisPersonList == null) return null;
+            
+            IEnumerable<Person> personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
+            
+            return personList;
         }
 
-        public void SetString(string key, string value)
+        public Person Get(int id)
         {
-            _distributedCache.SetString(key, value);
+            var cacheKeyId = CacheKey + " {" + id + "}";
+            var redisPerson = _distributedCache.GetString(cacheKeyId);
+            if (redisPerson == null) return null;
+            
+            var person = JsonConvert.DeserializeObject<Person>(redisPerson);
+            
+            return person;
+        }
+
+        public void SaveAll(IEnumerable<Person> persons)
+        {
+            var redisPersonList = JsonConvert.SerializeObject(persons);
+            _distributedCache.SetString(CacheKey, redisPersonList);
+        }
+
+        public void SavePerson(Person person)
+        {
+            var cacheKeyId = CacheKey + " {" + person.Id + "}";
+            var redisPerson = JsonConvert.SerializeObject(person);
+            _distributedCache.SetString(cacheKeyId, redisPerson);
         }
     }
 }
