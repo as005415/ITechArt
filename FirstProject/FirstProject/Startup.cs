@@ -34,6 +34,8 @@ namespace FirstProject
             var redisHost = Configuration["Redis:Host"];
             var redisPort = Configuration["Redis:Port"];
             services.AddStackExchangeRedisCache(options => options.Configuration = $"{redisHost}:{redisPort}");
+            
+            services.AddSingleton<IRedisPersonRepository, RedisPersonRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

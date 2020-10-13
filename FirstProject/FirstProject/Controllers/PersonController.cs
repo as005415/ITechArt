@@ -14,12 +14,12 @@ namespace FirstProject.Controllers
     public class PersonController : Controller
     {
         private readonly IPersonRepository _personRepository;
-        private readonly IDistributedCache _distributedCache;
+        private readonly IRedisPersonRepository _redisPersonRepository;
 
-        public PersonController(IPersonRepository personRepository, IDistributedCache distributedCache)
+        public PersonController(IPersonRepository personRepository, IRedisPersonRepository redisPersonRepository)
         {
             _personRepository = personRepository;
-            _distributedCache = distributedCache;
+            _redisPersonRepository = redisPersonRepository;
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace FirstProject.Controllers
         {
             const string cacheKey = "personList";
             List<Person> personList;
-            var redisPersonList = _distributedCache.GetString(cacheKey);
+            var redisPersonList = _redisPersonRepository.GetString(cacheKey);
             if (redisPersonList != null)
             {
                 personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
@@ -43,7 +43,7 @@ namespace FirstProject.Controllers
             {
                 personList = _personRepository.GetAll().ToList();
                 redisPersonList = JsonConvert.SerializeObject(personList);
-                _distributedCache.SetString(cacheKey, redisPersonList);
+                _redisPersonRepository.SetString(cacheKey, redisPersonList);
             }
 
             return Ok(personList);
@@ -66,7 +66,7 @@ namespace FirstProject.Controllers
         {
             const string cacheKey = "personList";
             List<Person> personList;
-            var redisPersonList = _distributedCache.GetString(cacheKey);
+            var redisPersonList = _redisPersonRepository.GetString(cacheKey);
             if (redisPersonList != null)
             {
                 personList = JsonConvert.DeserializeObject<List<Person>>(redisPersonList);
@@ -75,7 +75,7 @@ namespace FirstProject.Controllers
             {
                 personList = _personRepository.GetAll().ToList();
                 redisPersonList = JsonConvert.SerializeObject(personList);
-                _distributedCache.SetString(cacheKey, redisPersonList);
+                _redisPersonRepository.SetString(cacheKey, redisPersonList);
             }
 
             var person = personList.Find(p => p.Id == id);
