@@ -37,17 +37,23 @@ namespace FirstProject.Repository
             return person;
         }
 
-        public void SaveAll(IEnumerable<Person> persons)
+        public void UpdateAll(IEnumerable<Person> persons)
         {
             var redisPersonList = JsonConvert.SerializeObject(persons);
             _distributedCache.SetString(CacheKey, redisPersonList);
         }
 
-        public void SavePerson(Person person)
+        public void AddOrUpdate(Person person)
         {
-            var cacheKeyId = CacheKey + " {" + person.Id + "}";
+            var cacheKeyId = $"{CacheKey}-{person.Id}";
             var redisPerson = JsonConvert.SerializeObject(person);
             _distributedCache.SetString(cacheKeyId, redisPerson);
+        }
+
+        public void RemovePerson(Person person)
+        {
+            var cacheKeyId = $"{CacheKey}-{person.Id}";
+            _distributedCache.Remove(cacheKeyId);
         }
     }
 }

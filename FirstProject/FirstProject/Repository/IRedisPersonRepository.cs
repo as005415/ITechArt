@@ -8,7 +8,8 @@ namespace FirstProject.Repository
     {
         IEnumerable<Person> GetAll();
         Person Get(int id);
-        void SaveAll(IEnumerable<Person> persons);
-        void SavePerson(Person person);
+        void UpdateAll(IEnumerable<Person> persons);
+        void AddOrUpdate(Person person);
+        void RemovePerson(Person person);
     }
 }

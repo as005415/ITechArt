@@ -39,7 +39,7 @@ namespace FirstProject.Controllers
             allPersons = _personRepository.GetAll();
             
             if (allPersons == null) return NotFound();
-            _redisPersonRepository.SaveAll(allPersons);
+            _redisPersonRepository.UpdateAll(allPersons);
             
             return Ok(allPersons);
         }
@@ -65,7 +65,7 @@ namespace FirstProject.Controllers
             person = _personRepository.Get(id);
 
             if (person == null) return NotFound();
-            _redisPersonRepository.SavePerson(person);
+            _redisPersonRepository.AddOrUpdate(person);
 
             return Ok(person);
         }
@@ -87,6 +87,7 @@ namespace FirstProject.Controllers
                 return NotFound();
             }
 
+            _redisPersonRepository.RemovePerson(person);
             _personRepository.DeletePerson(id);
             _personRepository.Save();
             return Ok(person);
