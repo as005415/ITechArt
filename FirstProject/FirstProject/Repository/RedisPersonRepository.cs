@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FirstProject.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -11,7 +10,7 @@ namespace FirstProject.Repository
         private readonly IDistributedCache _distributedCache;
         private const string CacheKey = "personList";
 
-        public string GetCacheKey(int id)
+        private string GetCacheKey(int id)
         {
             return $"{CacheKey}-{id}";
         } 

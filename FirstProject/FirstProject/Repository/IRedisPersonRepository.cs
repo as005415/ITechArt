@@ -11,6 +11,5 @@ namespace FirstProject.Repository
         void UpdateAll(IEnumerable<Person> persons);
         void AddOrUpdate(Person person);
         void RemovePerson(Person person);
-        string GetCacheKey(int id);
     }
 }
