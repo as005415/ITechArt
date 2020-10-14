@@ -11,6 +11,11 @@ namespace FirstProject.Repository
         private readonly IDistributedCache _distributedCache;
         private const string CacheKey = "personList";
 
+        public string GetCacheKey(int id)
+        {
+            return $"{CacheKey}-{id}";
+        } 
+            
         public RedisPersonRepository(IDistributedCache distributedCache)
         {
             _distributedCache = distributedCache;
@@ -28,7 +33,7 @@ namespace FirstProject.Repository
 
         public Person Get(int id)
         {
-            var cacheKeyId = CacheKey + " {" + id + "}";
+            var cacheKeyId = GetCacheKey(id);
             var redisPerson = _distributedCache.GetString(cacheKeyId);
             if (redisPerson == null) return null;
             
@@ -45,14 +50,14 @@ namespace FirstProject.Repository
 
         public void AddOrUpdate(Person person)
         {
-            var cacheKeyId = $"{CacheKey}-{person.Id}";
+            var cacheKeyId = GetCacheKey(person.Id);
             var redisPerson = JsonConvert.SerializeObject(person);
             _distributedCache.SetString(cacheKeyId, redisPerson);
         }
 
         public void RemovePerson(Person person)
         {
-            var cacheKeyId = $"{CacheKey}-{person.Id}";
+            var cacheKeyId = GetCacheKey(person.Id);
             _distributedCache.Remove(cacheKeyId);
         }
     }
