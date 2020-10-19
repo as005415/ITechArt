@@ -2,7 +2,7 @@
 
 namespace Storage
 {
-    public class Persons
+    public class PersonRequests
     {
         public int Id { get; set; }
         public string FullName { get; set; }
@@ -11,6 +11,15 @@ namespace Storage
         public string PassportId { get; set; }
         public string PhoneNumber { get; set; }
         public int FamilyComposition { get; set; }
-        public int PropertyInfo{ get; set; }
+        public int PropertyInfo { get; set; }
+        public DateTime DateTimeOfRequest { get; set; }
+        public StateOfRequest StateOfRequest { get; set; }
+    }
+
+    public enum StateOfRequest
+    {
+        Approved,
+        Denied,
+        InProgress
     }
 }
