@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Storage
+﻿namespace Storage
 {
     public class UsersPersonRequests
     {

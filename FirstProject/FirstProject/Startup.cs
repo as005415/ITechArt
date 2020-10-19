@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Storage;
 
 namespace FirstProject
 {
@@ -24,9 +25,9 @@ namespace FirstProject
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<PersonContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<StorageContext>(options => options.UseSqlServer(connection));
 
-            services.AddScoped<IPersonRepository, PersonRepository>();
+            //services.AddScoped<IPersonRepository, PersonRepository>();
 
             services.AddControllers().AddFluentValidation();
             services.AddTransient<IValidator<Person>, PersonValidator>();

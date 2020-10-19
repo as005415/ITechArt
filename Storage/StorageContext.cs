@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Storage
 {
-    public class Context : DbContext
+    public class StorageContext : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options)
+        public StorageContext(DbContextOptions<StorageContext> options) : base(options)
         {
         }
         
