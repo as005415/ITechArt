@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Storage
 {
@@ -14,6 +15,9 @@ namespace Storage
         public int PropertyInfo { get; set; }
         public DateTime DateTimeOfRequest { get; set; }
         public StateOfRequest StateOfRequest { get; set; }
+        
+        public ICollection<PropertyInfo> PropertyInfos { get; set; }
+        public ICollection<UsersPersonRequests> UsersPersonRequests { get; set; }
     }
 
     public enum StateOfRequest
