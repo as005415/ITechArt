@@ -9,5 +9,9 @@
         
         public int PersonRequestId { get; set; }
         public PersonRequests PersonRequest { get; set; }
+        
+        public int PersonId { get; set; }
+        public string PersonPassportId { get; set; }
+        public Persons Person { get; set; }
     }
 }
