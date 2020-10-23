@@ -1,9 +1,11 @@
 ﻿namespace Storage
 {
-    public class PropertyInfo
+    public class Estate
     {
         public int Id { get; set; }
-        public int Area { get; set; }
+        public int CommonArea { get; set; }
+        public int LivingArea { get; set; }
+        public string Address { get; set; }
         public string TypeOfProperty { get; set; }
         public string StateOfProperty { get; set; }
         

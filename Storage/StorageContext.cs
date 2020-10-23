@@ -9,16 +9,16 @@ namespace Storage
         }
         
         public DbSet<PersonRequests> PersonRequests { get; set; }
-        public DbSet<PropertyInfo> PropertyInfo { get; set; }
+        public DbSet<Estate> PropertyInfo { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PropertyInfo>()
+            modelBuilder.Entity<Estate>()
                 .HasOne<PersonRequests>(info => info.PersonRequest)
-                .WithMany(requests => requests.PropertyInfos)
+                .WithMany(requests => requests.Estates)
                 .HasForeignKey(info => info.PersonRequestId);
             
 
