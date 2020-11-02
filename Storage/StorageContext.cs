@@ -10,7 +10,7 @@ namespace Storage
         }
         
         public DbSet<PersonRequests> PersonRequests { get; set; }
-        public DbSet<Estate> PropertyInfo { get; set; }
+        public DbSet<Estate> Estates { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Permissions> Permissions { get; set; }

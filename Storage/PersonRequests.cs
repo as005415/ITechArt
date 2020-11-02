@@ -9,8 +9,6 @@ namespace Storage
         public int PersonId { get; set; }
         public DateTime DateTimeOfRequest { get; set; }
         public StateOfRequest StateOfRequest { get; set; }
-
-        public ICollection<Estate> Estates { get; set; }
         public ICollection<UsersPersonRequests> UsersPersonRequests { get; set; }
         public Persons Person { get; set; }
     }
