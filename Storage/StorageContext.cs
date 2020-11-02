@@ -17,12 +17,11 @@ namespace Storage
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Estate>()
-                .HasOne<PersonRequests>(info => info.PersonRequest)
-                .WithMany(requests => requests.Estates)
-                .HasForeignKey(info => info.PersonRequestId);
+                .HasOne<Persons>(r => r.Person)
+                .WithMany(r => r.Estates)
+                .HasForeignKey(r => r.PersonId);
             
 
-            modelBuilder.Entity<UsersPersonRequests>().HasKey(r => new {r.UserId, r.PersonRequestId});
             modelBuilder.Entity<UsersPersonRequests>().HasIndex(r => new {r.UserId, r.PersonRequestId}).IsUnique();
             
             modelBuilder.Entity<UsersPersonRequests>()
@@ -36,7 +35,6 @@ namespace Storage
                 .HasForeignKey(requests => requests.PersonRequestId);
 
 
-            modelBuilder.Entity<UsersRoles>().HasKey(r => new {r.UserId, r.RoleId});
             modelBuilder.Entity<UsersRoles>().HasIndex(r => new {r.UserId, r.RoleId}).IsUnique();
             
             modelBuilder.Entity<UsersRoles>()
@@ -50,7 +48,6 @@ namespace Storage
                 .HasForeignKey(role => role.RoleId);
             
             
-            modelBuilder.Entity<RolesPermissions>().HasKey(r => new {r.PermissionId, r.RoleId});
             modelBuilder.Entity<RolesPermissions>().HasIndex(r => new {r.PermissionId, r.RoleId}).IsUnique();
 
             modelBuilder.Entity<RolesPermissions>()
