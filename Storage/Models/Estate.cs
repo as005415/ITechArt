@@ -1,4 +1,4 @@
-﻿namespace Storage
+﻿namespace Storage.Models
 {
     public class Estate
     {
@@ -10,7 +10,6 @@
         public string StateOfProperty { get; set; }
 
         public int PersonId { get; set; }
-        public string PersonPassportId { get; set; }
         public Persons Person { get; set; }
     }
 }

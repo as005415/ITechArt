@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Storage
+namespace Storage.Models
 {
     public class PersonRequests
     {

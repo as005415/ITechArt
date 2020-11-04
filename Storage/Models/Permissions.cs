@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Storage
+namespace Storage.Models
 {
-    public class Roles
+    public class Permissions
     {
         public int Id { get; set; }
-        public string RoleName { get; set; }
+        public string PermissionDescription { get; set; }
         
-        public ICollection<UsersRoles> UsersRoles { get; set; }
         public ICollection<RolesPermissions> RolesPermissions { get; set; }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Storage.Models;
 
-namespace Storage
+namespace Storage.ModelsConfig
 {
     public class EstateConfig : IEntityTypeConfiguration<Estate>
     {
