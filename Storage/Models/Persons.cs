@@ -13,7 +13,6 @@ namespace Storage.Models
         public string PassportId { get; set; }
         public string PhoneNumber { get; set; }
         public int FamilyComposition { get; set; }
-        public int PropertyInfo { get; set; }
         
         public ICollection<Persons> Person { get; set; }
         public ICollection<Estate> Estates { get; set; }
