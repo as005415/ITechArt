@@ -12,6 +12,7 @@ namespace Storage.ModelsConfig
             builder.Property(p => p.LastName).HasMaxLength(255);
             builder.Property(p => p.MiddleName).HasMaxLength(255);
             builder.Property(p => p.PassportId).HasMaxLength(14);
+            builder.Property(p => p.AdministrativeUnit).HasMaxLength(255);
             builder.Property(p => p.PhoneNumber).HasMaxLength(13);
         }
     }
