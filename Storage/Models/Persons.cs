@@ -16,5 +16,6 @@ namespace Storage.Models
         
         public ICollection<Persons> Person { get; set; }
         public ICollection<Estate> Estates { get; set; }
+        public ICollection<Norm> Norms { get; set; }
     }
 }
