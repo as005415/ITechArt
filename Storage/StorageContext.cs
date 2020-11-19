@@ -15,6 +15,7 @@ namespace Storage
         public DbSet<Users> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
+        public DbSet<Queue> Queues { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
