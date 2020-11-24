@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "..\Storage\Storage.csproj", "{B1E98F50-13C6-4126-820E-02BDBA215D25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Storage", "Storage\Storage.csproj", "{B1E98F50-13C6-4126-820E-02BDBA215D25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{07682B69-DEF8-4A28-9DAD-841122DE4ED5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +14,9 @@ Global
 		{B1E98F50-13C6-4126-820E-02BDBA215D25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1E98F50-13C6-4126-820E-02BDBA215D25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1E98F50-13C6-4126-820E-02BDBA215D25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07682B69-DEF8-4A28-9DAD-841122DE4ED5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07682B69-DEF8-4A28-9DAD-841122DE4ED5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07682B69-DEF8-4A28-9DAD-841122DE4ED5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07682B69-DEF8-4A28-9DAD-841122DE4ED5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
