@@ -15,7 +15,7 @@ namespace WebApplication.Repository
             _context = context;
         }
 
-        public IEnumerable<Users> GetAllUsersOnlyWithRoles()
+        public IEnumerable<UserModel> GetAllUsersOnlyWithRoles()
         {
             var users =
                 _context.Users.Include(x => x.UsersRoles).ThenInclude(x => x.Role).ToList();

@@ -11,7 +11,7 @@ namespace Storage.ModelsConfig
             builder.HasIndex(r => new {r.UserId, r.PersonRequestId}).IsUnique();
 
             builder
-                .HasOne<Users>(user => user.User)
+                .HasOne<UserModel>(user => user.UserModel)
                 .WithMany(usersPersonRequest => usersPersonRequest.UsersPersonRequests)
                 .HasForeignKey(requests => requests.UserId);
 

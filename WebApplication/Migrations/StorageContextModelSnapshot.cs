@@ -229,7 +229,7 @@ namespace WebApplication.Migrations
                     b.ToTable("RolesPermissions");
                 });
 
-            modelBuilder.Entity("Storage.Models.Users", b =>
+            modelBuilder.Entity("Storage.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,7 +246,7 @@ namespace WebApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("UserModel");
                 });
 
             modelBuilder.Entity("Storage.Models.UsersPersonRequests", b =>
@@ -356,7 +356,7 @@ namespace WebApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Storage.Models.Users", "User")
+                    b.HasOne("Storage.Models.UserModel", "UserModel")
                         .WithMany("UsersPersonRequests")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -371,7 +371,7 @@ namespace WebApplication.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Storage.Models.Users", "User")
+                    b.HasOne("Storage.Models.UserModel", "UserModel")
                         .WithMany("UsersRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
