@@ -88,9 +88,9 @@ namespace WebApplication.Controllers
             var claims = new List<Claim>();
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userModelInfo.Login));
             claims.Add(new Claim("userModelInput", userModelInfo.Login));
-            foreach (var role in _repository.GetUserRolesByUsername(userModelInfo.Login))
+            foreach (var role in userModelInfo.UsersRoles)
             {
-                claims.Add(new Claim("role", role));
+                claims.Add(new Claim("role", role.Role.RoleName));
             }
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
