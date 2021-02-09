@@ -6,6 +6,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -52,34 +53,10 @@ namespace WebApplication.Controllers
         {
             var user = _repository.GetAllUsersOnlyWithRoles()
                 .SingleOrDefault(x => x.Login == loginCredentials.Login
-                                      && VerifyHashedPassword(x.Password, loginCredentials.Password));
+                                      && Argon2.Verify(x.Password, loginCredentials.Password));
             return user;
         }
 
-        private bool VerifyHashedPassword(string hashedPassword, string password)
-        {
-            if (hashedPassword == null || password == null)
-            {
-                return false;
-            }
-            
-            var src = Convert.FromBase64String(hashedPassword);
-            if (src.Length != 0x31 || src[0] != 0)
-            {
-                return false;
-            }
-            var dst = new byte[0x10];
-            Buffer.BlockCopy(src, 1, dst, 0, 0x10);
-            
-            var buff2 = new byte[0x20];
-            Buffer.BlockCopy(src, 0x11, buff2, 0, 0x20);
-            
-            using var bytes = new Rfc2898DeriveBytes(password, dst, 0x3e8);
-            var buff = bytes.GetBytes(0x20);
-            
-            return buff.SequenceEqual(buff2);
-        }
-        
         private string GenerateJwtToken(UserModel userModelInfo)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JWT:SecretKey"]));
