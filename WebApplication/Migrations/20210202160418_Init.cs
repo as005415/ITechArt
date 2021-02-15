@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApplication.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,7 +50,7 @@ namespace WebApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "UserModel",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -144,7 +144,7 @@ namespace WebApplication.Migrations
                     table.ForeignKey(
                         name: "FK_UsersRoles_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "UserModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -235,7 +235,7 @@ namespace WebApplication.Migrations
                     table.ForeignKey(
                         name: "FK_UsersPersonRequests_Users_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "UserModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -326,7 +326,7 @@ namespace WebApplication.Migrations
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserModel");
 
             migrationBuilder.DropTable(
                 name: "Persons");

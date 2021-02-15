@@ -12,7 +12,7 @@ namespace Storage
         
         public DbSet<PersonRequests> PersonRequests { get; set; }
         public DbSet<Estate> Estates { get; set; }
-        public DbSet<Users> Users { get; set; }
+        public DbSet<UserModel> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
         public DbSet<Queue> Queues { get; set; }
