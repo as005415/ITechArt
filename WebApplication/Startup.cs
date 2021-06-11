@@ -8,8 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Storage;
+using WebApplication.Models.DbModels;
 using WebApplication.Repository;
+using WebApplication.Services;
 
 namespace WebApplication
 {
@@ -25,14 +26,16 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("MsDbConnection");
+            var connection = Configuration.GetConnectionString("DbConnection");
 
             services.AddDbContext<StorageContext>(options =>
-                options.UseSqlServer(connection, builder => builder.MigrationsAssembly("WebApplication")));
+                options.UseNpgsql(connection, builder => builder.MigrationsAssembly("WebApplication")));
 
             services.AddScoped<IRepository, Repository.Repository>();
+            
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
-            services.AddControllers().AddNewtonsoftJson(options =>
+            services.AddMvc().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -59,10 +62,7 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
