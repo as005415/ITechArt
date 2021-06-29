@@ -16,10 +16,15 @@ namespace Repository.UnitOfWork.Implementation
         public IRoleRepository RoleRepository { get; }
         public IUserRepository UserRepository { get; }
 
-        public UnitOfWork(IRoleRepository roleRepository, IUserRepository userRepository,
-            IQueueRepository queueRepository, IPersonRequestRepository personRequestRepository,
-            IPersonRepository personRepository, IPermissionRepository permissionRepository,
-            INormRepository normRepository, IEstateRepository estateRepository, Context context)
+        public UnitOfWork(IRoleRepository roleRepository,
+            IUserRepository userRepository,
+            IQueueRepository queueRepository,
+            IPersonRequestRepository personRequestRepository,
+            IPersonRepository personRepository,
+            IPermissionRepository permissionRepository,
+            INormRepository normRepository,
+            IEstateRepository estateRepository,
+            Context context)
         {
             RoleRepository = roleRepository;
             UserRepository = userRepository;
