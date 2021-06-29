@@ -1,6 +1,4 @@
-﻿using WebApplication.Models.DbModels;
-
-namespace WebApplication.Models.DTOModels
+﻿namespace WebApplication.Models.DTOModels
 {
     public class PersonNumberViewModel
     {

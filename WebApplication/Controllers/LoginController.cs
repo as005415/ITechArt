@@ -4,12 +4,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using Domain.Models;
 using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication.Models.DbModels;
 using WebApplication.Repository;
 
 namespace WebApplication.Controllers
@@ -61,7 +61,7 @@ namespace WebApplication.Controllers
             var claims = new List<Claim>();
             claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userModelInfo.Login));
             claims.Add(new Claim("userModelInput", userModelInfo.Login));
-            foreach (var role in userModelInfo.UsersRoles) claims.Add(new Claim("role", role.Role.RoleName));
+            foreach (var role in userModelInfo.UserRole) claims.Add(new Claim("role", role.Role.RoleName));
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
             var token = new JwtSecurityToken(

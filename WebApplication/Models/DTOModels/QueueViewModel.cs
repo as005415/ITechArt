@@ -1,4 +1,4 @@
-﻿using WebApplication.Models.DbModels;
+﻿using Domain.Models;
 
 namespace WebApplication.Models.DTOModels
 {

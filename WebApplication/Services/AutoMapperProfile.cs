@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using WebApplication.Models.DbModels;
+using Domain.Models;
 using WebApplication.Models.DTOModels;
 
 namespace WebApplication.Services
@@ -8,13 +8,13 @@ namespace WebApplication.Services
     {
         public AutoMapperProfile()
         {
-            CreateMap<AddRequestViewModel, Persons>();
+            CreateMap<AddRequestViewModel, Person>();
             CreateMap<AddRequestViewModel, Estate>();
 
-            CreateMap<Persons, PersonsRequestsViewModel>();
-            CreateMap<PersonRequests, PersonsRequestsViewModel>();
-            CreateMap<PersonsRequestsViewModel, Persons>();
-            CreateMap<PersonsRequestsViewModel, PersonRequests>();
+            CreateMap<Person, PersonsRequestsViewModel>();
+            CreateMap<PersonRequest, PersonsRequestsViewModel>();
+            CreateMap<PersonsRequestsViewModel, Person>();
+            CreateMap<PersonsRequestsViewModel, PersonRequest>();
         }
     }
 }

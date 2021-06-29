@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Domain;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using WebApplication.Models.DbModels;
 using WebApplication.Models.DTOModels;
 
 namespace WebApplication.Repository
 {
     public class Repository : IRepository
     {
-        private readonly StorageContext _context;
+        private readonly Context _context;
         private readonly IMapper _mapper;
 
-        public Repository(StorageContext context, IMapper mapper)
+        public Repository(Context context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -22,7 +23,7 @@ namespace WebApplication.Repository
 
         public async Task<PersonNumberViewModel> GetPersonNumberByCredential(PersonNumberViewModel personCredential)
         {
-            var person = await GetPersonByCredential(_mapper.Map<Persons>(personCredential));
+            var person = await GetPersonByCredential(_mapper.Map<Person>(personCredential));
 
             var personRequest = await _context.PersonRequests.FirstOrDefaultAsync(x =>
                 x.Person == person && x.StateOfRequest == StateOfRequest.Approved);
@@ -42,7 +43,7 @@ namespace WebApplication.Repository
         public async Task<AddRequestViewModel> AddPersonRequestWithData(AddRequestViewModel viewModel)
         {
             var estate = await GetEstateByCredential(_mapper.Map<Estate>(viewModel));
-            var person = await GetPersonByCredential(_mapper.Map<Persons>(viewModel));
+            var person = await GetPersonByCredential(_mapper.Map<Person>(viewModel));
 
             if (estate == null)
             {
@@ -53,7 +54,7 @@ namespace WebApplication.Repository
 
             if (person == null)
             {
-                person = _mapper.Map<Persons>(viewModel);
+                person = _mapper.Map<Person>(viewModel);
                 person.Estate = estate;
                 await AddPerson(person);
                 person = await GetPersonByCredential(person);
@@ -66,7 +67,7 @@ namespace WebApplication.Repository
 
             if (personRequest == null)
             {
-                personRequest = new PersonRequests
+                personRequest = new PersonRequest
                 {
                     DateTimeOfRequest = DateTime.Today,
                     StateOfRequest = StateOfRequest.InProgress,
@@ -78,7 +79,7 @@ namespace WebApplication.Repository
             return viewModel;
         }
 
-        public async Task<Persons> GetPersonByCredential(Persons person)
+        public async Task<Person> GetPersonByCredential(Person person)
         {
             return await _context.Persons.FirstOrDefaultAsync(x =>
                 x.PassportId == person.PassportId &&
@@ -116,7 +117,7 @@ namespace WebApplication.Repository
             return viewModel;
         }
 
-        public async Task AddPerson(Persons person)
+        public async Task AddPerson(Person person)
         {
             await _context.Persons.AddAsync(person);
             await _context.SaveChangesAsync();
@@ -128,7 +129,7 @@ namespace WebApplication.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddPersonRequest(PersonRequests personRequest)
+        public async Task AddPersonRequest(PersonRequest personRequest)
         {
             await _context.PersonRequests.AddAsync(personRequest);
             await _context.SaveChangesAsync();
@@ -136,7 +137,7 @@ namespace WebApplication.Repository
 
         public async Task<PersonsRequestsViewModel> EditPersonRequestState(PersonsRequestsViewModel viewModel)
         {
-            var person = await GetPersonByCredential(_mapper.Map<Persons>(viewModel));
+            var person = await GetPersonByCredential(_mapper.Map<Person>(viewModel));
             var personRequest = await _context.PersonRequests.FirstOrDefaultAsync(x =>
                 x.Person == person);
 
@@ -165,24 +166,24 @@ namespace WebApplication.Repository
         public IEnumerable<User> GetAllUsersOnlyWithRoles()
         {
             var users =
-                _context.Users.Include(x => x.UsersRoles).ThenInclude(x => x.Role).ToList();
+                _context.Users.Include(x => x.UserRole).ThenInclude(x => x.Role).ToList();
 
             return users;
         }
 
         public IEnumerable<string> GetUserRolesByUsername(string username)
         {
-            var data = _context.Users.Include(x => x.UsersRoles).ThenInclude(x => x.Role).ToList();
+            var data = _context.Users.Include(x => x.UserRole).ThenInclude(x => x.Role).ToList();
             var user = data.FirstOrDefault(x => x.Login == username);
 
             if (user == null) return new List<string>();
 
-            var roles = user.UsersRoles.ToList().Select(role => role.Role.RoleName).ToList();
+            var roles = user.UserRole.ToList().Select(role => role.Role.RoleName).ToList();
 
             return roles;
         }
 
-        public IEnumerable<Persons> GetAllPersons()
+        public IEnumerable<Person> GetAllPersons()
         {
             var users = _context.Persons.ToList();
             return users;

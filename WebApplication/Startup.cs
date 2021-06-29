@@ -8,9 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication.Models.DbModels;
-using WebApplication.Repository;
 using WebApplication.Services;
+using Domain;
+using Repository;
 
 namespace WebApplication
 {
@@ -26,12 +26,7 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("DbConnection");
-
-            services.AddDbContext<StorageContext>(options =>
-                options.UseNpgsql(connection, builder => builder.MigrationsAssembly("WebApplication")));
-
-            services.AddScoped<IRepository, Repository.Repository>();
+            services.AddRepository(Configuration);
             
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 

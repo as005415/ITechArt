@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebApplication.Models.DbModels;
+using Domain.Models;
 using WebApplication.Models.DTOModels;
 
 namespace WebApplication.Repository
@@ -9,17 +9,17 @@ namespace WebApplication.Repository
     {
         Task<PersonNumberViewModel> GetPersonNumberByCredential(PersonNumberViewModel personCredential);
         Task<AddRequestViewModel> AddPersonRequestWithData(AddRequestViewModel viewModel);
-        Task<Persons> GetPersonByCredential(Persons person);
+        Task<Person> GetPersonByCredential(Person person);
         Task<Estate> GetEstateByCredential(Estate estate);
         Task<ICollection<PersonsRequestsViewModel>> GetAllPersonRequestInProgress();
-        Task AddPerson(Persons person);
+        Task AddPerson(Person person);
         Task AddEstate(Estate estate);
-        Task AddPersonRequest(PersonRequests personRequest);
+        Task AddPersonRequest(PersonRequest personRequest);
         Task<PersonsRequestsViewModel> EditPersonRequestState(PersonsRequestsViewModel viewModel);
 
 
         IEnumerable<User> GetAllUsersOnlyWithRoles();
         IEnumerable<string> GetUserRolesByUsername(string username);
-        IEnumerable<Persons> GetAllPersons();
+        IEnumerable<Person> GetAllPersons();
     }
 }
