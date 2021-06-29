@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.ModelsConfig
 {
-    public class NormConfig : IEntityTypeConfiguration<Norm>
+    public class NormConfiguration : IEntityTypeConfiguration<Norm>
     {
         public void Configure(EntityTypeBuilder<Norm> builder)
         {

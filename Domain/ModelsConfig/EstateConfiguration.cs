@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.ModelsConfig
 {
-    public class EstateConfig : IEntityTypeConfiguration<Estate>
+    public class EstateConfiguration : IEntityTypeConfiguration<Estate>
     {
         public void Configure(EntityTypeBuilder<Estate> builder)
         {

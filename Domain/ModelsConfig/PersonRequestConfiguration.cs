@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Domain.ModelsConfig
 {
-    public class PersonRequestConfig : IEntityTypeConfiguration<PersonRequest>
+    public class PersonRequestConfiguration : IEntityTypeConfiguration<PersonRequest>
     {
         public void Configure(EntityTypeBuilder<PersonRequest> builder)
         {
