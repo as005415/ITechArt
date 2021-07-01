@@ -3,13 +3,13 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Storage;
-using WebApplication.Repository;
+using Newtonsoft.Json;
+using Repository;
+using WebApplication.Services;
 
 namespace WebApplication
 {
@@ -25,15 +25,12 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration.GetConnectionString("MsDbConnection");
+            services.RegisterRepositories(Configuration);
 
-            services.AddDbContext<StorageContext>(options =>
-                options.UseSqlServer(connection, builder => builder.MigrationsAssembly("WebApplication")));
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
-            services.AddScoped<IRepository, Repository.Repository>();
-
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddMvc().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -59,10 +56,7 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
 
