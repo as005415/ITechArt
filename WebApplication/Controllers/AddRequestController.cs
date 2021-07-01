@@ -23,7 +23,7 @@ namespace WebApplication.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest();
-            
+
             return Ok(await _repository.AddPersonRequestWithData(viewModel));
         }
     }

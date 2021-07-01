@@ -18,8 +18,8 @@ namespace WebApplication.Controllers
     [Route("[controller]")]
     public class LoginController : Controller
     {
-        private readonly IRepository _repository;
         private readonly IConfiguration _configuration;
+        private readonly IRepository _repository;
 
         public LoginController(IRepository repository, IConfiguration configuration)
         {

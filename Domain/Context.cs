@@ -10,11 +10,6 @@ namespace Domain
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
         public DbSet<PersonRequest> PersonRequests { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Estate> Estates { get; set; }
@@ -23,5 +18,10 @@ namespace Domain
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Queue> Queues { get; set; }
         public DbSet<Norm> Norms { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
     }
 }

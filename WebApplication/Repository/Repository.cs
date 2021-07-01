@@ -31,9 +31,9 @@ namespace WebApplication.Repository
             if (personRequest == null) return null;
 
             var queue = await _context.Queues.FirstOrDefaultAsync(x => x.PersonRequestsId == personRequest.Id);
-            
+
             if (queue == null) return personCredential;
-            
+
             personCredential.Number = queue.Number;
             personCredential.StateOfRequest = personRequest.StateOfRequest.ToString();
 
@@ -100,8 +100,8 @@ namespace WebApplication.Repository
 
         public async Task<ICollection<PersonsRequestsViewModel>> GetAllPersonRequestInProgress()
         {
-            var personRequests = await _context.PersonRequests.Where(x=>
-                x.StateOfRequest==StateOfRequest.InProgress).ToListAsync();
+            var personRequests = await _context.PersonRequests.Where(x =>
+                x.StateOfRequest == StateOfRequest.InProgress).ToListAsync();
 
             await _context.Persons.ToListAsync();
 
@@ -145,8 +145,8 @@ namespace WebApplication.Repository
 
             switch (personRequest.StateOfRequest)
             {
-                case StateOfRequest.InProgress when (viewModel.StateOfRequest == StateOfRequest.Approved ||
-                                                     viewModel.StateOfRequest == StateOfRequest.Denied):
+                case StateOfRequest.InProgress when viewModel.StateOfRequest == StateOfRequest.Approved ||
+                                                    viewModel.StateOfRequest == StateOfRequest.Denied:
                 case StateOfRequest.Approved when viewModel.StateOfRequest == StateOfRequest.Finished:
                     personRequest.StateOfRequest = viewModel.StateOfRequest;
                     break;

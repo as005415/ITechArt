@@ -4,15 +4,13 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Repository.Repository;
-using Repository.Repository.Implementation;
-using Repository.UnitOfWork;
 
 namespace Repository
 {
     public static class DependencyInjectionConfiguration
     {
-        public static IServiceCollection RegisterRepositories(this IServiceCollection services,
+        public static IServiceCollection RegisterRepositories(
+            this IServiceCollection services,
             IConfiguration configuration)
         {
             var dataAccess = Assembly.GetExecutingAssembly();

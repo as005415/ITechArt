@@ -7,16 +7,9 @@ namespace Repository.UnitOfWork.Implementation
     public class UnitOfWork : IUnitOfWork
     {
         private readonly Context _context;
-        public IEstateRepository EstateRepository { get; }
-        public INormRepository NormRepository { get; }
-        public IPermissionRepository PermissionRepository { get; }
-        public IPersonRepository PersonRepository { get; }
-        public IPersonRequestRepository PersonRequestRepository { get; }
-        public IQueueRepository QueueRepository { get; }
-        public IRoleRepository RoleRepository { get; }
-        public IUserRepository UserRepository { get; }
 
-        public UnitOfWork(IRoleRepository roleRepository,
+        public UnitOfWork(
+            IRoleRepository roleRepository,
             IUserRepository userRepository,
             IQueueRepository queueRepository,
             IPersonRequestRepository personRequestRepository,
@@ -36,6 +29,15 @@ namespace Repository.UnitOfWork.Implementation
             EstateRepository = estateRepository;
             _context = context;
         }
+
+        public IEstateRepository EstateRepository { get; }
+        public INormRepository NormRepository { get; }
+        public IPermissionRepository PermissionRepository { get; }
+        public IPersonRepository PersonRepository { get; }
+        public IPersonRequestRepository PersonRequestRepository { get; }
+        public IQueueRepository QueueRepository { get; }
+        public IRoleRepository RoleRepository { get; }
+        public IUserRepository UserRepository { get; }
 
 
         public async Task Commit()

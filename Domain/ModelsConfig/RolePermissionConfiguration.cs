@@ -8,15 +8,15 @@ namespace Domain.ModelsConfig
     {
         public void Configure(EntityTypeBuilder<RolePermission> builder)
         {
-            builder.HasIndex(r => new {r.PermissionId, r.RoleId}).IsUnique();
+            builder.HasIndex(r => new { r.PermissionId, r.RoleId }).IsUnique();
 
             builder
-                .HasOne<Permission>(permissions => permissions.Permission)
+                .HasOne(permissions => permissions.Permission)
                 .WithMany(rolesPermissions => rolesPermissions.RolePermission)
                 .HasForeignKey(permissions => permissions.PermissionId);
 
             builder
-                .HasOne<Role>(role => role.Role)
+                .HasOne(role => role.Role)
                 .WithMany(rolesPermissions => rolesPermissions.RolePermission)
                 .HasForeignKey(role => role.RoleId);
         }

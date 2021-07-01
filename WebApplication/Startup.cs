@@ -3,14 +3,13 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication.Services;
-using Domain;
+using Newtonsoft.Json;
 using Repository;
+using WebApplication.Services;
 
 namespace WebApplication
 {
@@ -27,11 +26,11 @@ namespace WebApplication
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterRepositories(Configuration);
-            
+
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
             services.AddMvc().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {

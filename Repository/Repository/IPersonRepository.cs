@@ -5,6 +5,5 @@ namespace Repository.Repository
 {
     public interface IPersonRepository : IGenericRepository<Person>
     {
-        
     }
 }

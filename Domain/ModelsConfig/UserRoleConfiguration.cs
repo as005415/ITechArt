@@ -8,15 +8,15 @@ namespace Domain.ModelsConfig
     {
         public void Configure(EntityTypeBuilder<UserRole> builder)
         {
-            builder.HasIndex(r => new {r.UserId, r.RoleId}).IsUnique();
+            builder.HasIndex(r => new { r.UserId, r.RoleId }).IsUnique();
 
             builder
-                .HasOne<User>(user => user.User)
+                .HasOne(user => user.User)
                 .WithMany(usersRoles => usersRoles.UserRole)
                 .HasForeignKey(user => user.UserId);
 
             builder
-                .HasOne<Role>(role => role.Role)
+                .HasOne(role => role.Role)
                 .WithMany(usersRoles => usersRoles.UserRole)
                 .HasForeignKey(role => role.RoleId);
         }
